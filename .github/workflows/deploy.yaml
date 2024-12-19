@@ -3,14 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Ejecutar este flujo de trabajo cuando haya un push a la rama main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-
     - name: Checkout code
       uses: actions/checkout@v3
 
@@ -23,12 +22,12 @@ jobs:
       run: npm install
 
     - name: Build project
-      run: npm run build
+      run: npm run build  # Crear el build
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        branch: gh-pages  
-        folder: ./jejejeje/dist
+        branch: gh-pages  # La rama a la que se desplegará
+        folder: ./build  # Cambia la ruta a la carpeta build, no dist
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de autenticación
