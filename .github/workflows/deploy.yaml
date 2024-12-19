@@ -28,8 +28,11 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
+        git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com".insteadOf "https://github.com"
+      # Configuramos Git para usar el token de autenticación en lugar de la contraseña
 
     - name: Deploy to GitHub Pages
       run: npm run deploy  # Despliega la aplicación a GitHub Pages
       env:
         CI: false  # Necesario para que gh-pages no tenga problemas con CI
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Usamos el token de autenticación configurado en GitHub Secrets
