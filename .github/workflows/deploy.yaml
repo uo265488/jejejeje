@@ -3,36 +3,34 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Ejecutar este flujo de trabajo cuando haya un push a la rama main
+      - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest  # Usamos una máquina virtual con Ubuntu
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
+
     - name: Checkout code
-      uses: actions/checkout@v2  # Esta acción descarga el código del repositorio
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'  # O la versión de Node.js que necesites
+        node-version: '18.18.1'  
 
     - name: Install dependencies
-      run: npm install  # Instala las dependencias de tu proyecto
+      run: npm install  
+      working-directory: ./my_girls_present
 
-    - name: Build the app
-      run: npm run build  # Construye la aplicación
-
-    - name: Set git config
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com".insteadOf "https://github.com"
-      # Configuramos Git para usar el token de autenticación en lugar de la contraseña
+    - name: Build project
+      run: npm run build
+      working-directory: ./my_girls_present
 
     - name: Deploy to GitHub Pages
-      run: npm run deploy  # Despliega la aplicación a GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages  
+        folder: ./my_girls_present/dist
       env:
-        CI: false  # Necesario para que gh-pages no tenga problemas con CI
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Usamos el token de autenticación configurado en GitHub Secrets
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
