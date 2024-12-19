@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Ejecutar este flujo de trabajo cuando haya un push a la rama main
 
 jobs:
   deploy:
@@ -16,13 +16,18 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18.18.1'  # O la versión de Node.js que necesites
+        node-version: '16'  # O la versión de Node.js que necesites
 
     - name: Install dependencies
       run: npm install  # Instala las dependencias de tu proyecto
 
     - name: Build the app
       run: npm run build  # Construye la aplicación
+
+    - name: Set git config
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
 
     - name: Deploy to GitHub Pages
       run: npm run deploy  # Despliega la aplicación a GitHub Pages
