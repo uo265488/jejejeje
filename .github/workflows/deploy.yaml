@@ -3,7 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Ejecutar este flujo de trabajo cuando haya un push a la rama main
+      - main
+
+permissions:
+  contents: write  # Permitir que el bot de GitHub Actions tenga permisos para escribir en el repositorio
 
 jobs:
   build-and-deploy:
@@ -16,18 +19,18 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18.18.1'  
+        node-version: '18.18.1'
 
     - name: Install dependencies
       run: npm install
 
     - name: Build project
-      run: npm run build  # Crear el build
+      run: npm run build
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        branch: gh-pages  # La rama a la que se desplegará
-        folder: ./build  # Cambia la ruta a la carpeta build, no dist
+        branch: gh-pages
+        folder: ./build
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Token de autenticación
