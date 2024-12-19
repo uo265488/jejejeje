@@ -1,0 +1,30 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Usamos una máquina virtual con Ubuntu
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2  # Esta acción descarga el código del repositorio
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.18.1'  # O la versión de Node.js que necesites
+
+    - name: Install dependencies
+      run: npm install  # Instala las dependencias de tu proyecto
+
+    - name: Build the app
+      run: npm run build  # Construye la aplicación
+
+    - name: Deploy to GitHub Pages
+      run: npm run deploy  # Despliega la aplicación a GitHub Pages
+      env:
+        CI: false  # Necesario para que gh-pages no tenga problemas con CI
